@@ -1,5 +1,6 @@
 package com.inventory.controller;
 
+import com.inventory.dto.LoginRequest;
 import com.inventory.dto.RegisterRequest;
 import com.inventory.model.Auth;
 import com.inventory.model.User;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -21,6 +23,50 @@ public class AuthController {
 
     private final UserRepository userRepository;
     private final AuthRepository authRepository;
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody LoginRequest request) {
+        Map<String, Object> response = new HashMap<>();
+
+        // Find user by username
+        var userOpt = userRepository.findByUsername(request.getUsername());
+        if (userOpt.isEmpty()) {
+            response.put("message", "Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        User user = userOpt.get();
+
+        // Find auth record
+        var authOpt = authRepository.findById(user.getId());
+        if (authOpt.isEmpty()) {
+            response.put("message", "Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        Auth auth = authOpt.get();
+
+        // Check password
+        if (!auth.checkPassword(request.getPassword())) {
+            response.put("message", "Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        // Generate a simple token (for demo purposes)
+        String token = UUID.randomUUID().toString();
+
+        // Build success response
+        response.put("message", "Login successful");
+        response.put("token", token);
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("id", user.getId());
+        userInfo.put("username", user.getUsername());
+        userInfo.put("email", user.getEmail());
+        userInfo.put("fullName", user.getFullName());
+        response.put("user", userInfo);
+
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(@Valid @RequestBody RegisterRequest request) {

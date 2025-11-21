@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Inventory Management</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-page" class="page">
+        <div class="auth-container">
+            <h1>Smart Inventory</h1>
+            <h2>Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <p class="auth-switch">Don't have an account? <a href="#" onclick="showPage('register-page')">Register</a></p>
+            </form>
+            <div id="login-error" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- Register Page -->
+    <div id="register-page" class="page hidden">
+        <div class="auth-container">
+            <h1>Smart Inventory</h1>
+            <h2>Register</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-username">Username</label>
+                    <input type="text" id="register-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-fullname">Full Name</label>
+                    <input type="text" id="register-fullname" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+                <p class="auth-switch">Already have an account? <a href="#" onclick="showPage('login-page')">Login</a></p>
+            </form>
+            <div id="register-error" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="page hidden">
+        <nav class="navbar">
+            <div class="nav-brand">Smart Inventory</div>
+            <div class="nav-user">
+                <span id="user-name"></span>
+                <button onclick="logout()" class="btn btn-secondary">Logout</button>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="sidebar">
+                <ul class="nav-menu">
+                    <li><a href="#" onclick="showSection('dashboard-home')" class="active">Dashboard</a></li>
+                    <li><a href="#" onclick="showSection('categories-section')">Categories</a></li>
+                    <li><a href="#" onclick="showSection('products-section')">Products</a></li>
+                    <li><a href="#" onclick="showSection('suppliers-section')">Suppliers</a></li>
+                    <li><a href="#" onclick="showSection('stock-section')">Stock</a></li>
+                    <li><a href="#" onclick="showSection('clients-section')">Clients</a></li>
+                    <li><a href="#" onclick="showSection('sales-section')">Sales</a></li>
+                </ul>
+            </div>
+
+            <div class="main-content">
+                <!-- Dashboard Home -->
+                <div id="dashboard-home" class="section">
+                    <h2>Dashboard Overview</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Categories</h3>
+                            <p id="stat-categories">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Products</h3>
+                            <p id="stat-products">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Stock Items</h3>
+                            <p id="stat-stock">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Clients</h3>
+                            <p id="stat-clients">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categories Section -->
+                <div id="categories-section" class="section hidden">
+                    <div class="section-header">
+                        <h2>Categories</h2>
+                        <button onclick="showModal('category-modal')" class="btn btn-primary">Add Category</button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categories-table-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- Products Section -->
+                <div id="products-section" class="section hidden">
+                    <div class="section-header">
+                        <h2>Products</h2>
+                        <button onclick="showModal('product-modal')" class="btn btn-primary">Add Product</button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Brand</th>
+                                <th>Category</th>
+                                <th>Warranty (months)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- Suppliers Section -->
+                <div id="suppliers-section" class="section hidden">
+                    <div class="section-header">
+                        <h2>Suppliers</h2>
+                        <button onclick="showModal('supplier-modal')" class="btn btn-primary">Add Supplier</button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="suppliers-table-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- Stock Section -->
+                <div id="stock-section" class="section hidden">
+                    <div class="section-header">
+                        <h2>Stock</h2>
+                        <button onclick="showModal('stock-modal')" class="btn btn-primary">Add Stock</button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Product</th>
+                                <th>Supplier</th>
+                                <th>Quantity</th>
+                                <th>Cost Price</th>
+                                <th>Selling Price</th>
+                                <th>Location</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stock-table-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- Clients Section -->
+                <div id="clients-section" class="section hidden">
+                    <div class="section-header">
+                        <h2>Clients</h2>
+                        <button onclick="showModal('client-modal')" class="btn btn-primary">Add Client</button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Credit Client</th>
+                                <th>Credit Limit</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clients-table-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- Sales Section -->
+                <div id="sales-section" class="section hidden">
+                    <div class="section-header">
+                        <h2>Sales</h2>
+                        <button onclick="showModal('sale-modal')" class="btn btn-primary">New Sale</button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Date</th>
+                                <th>Client</th>
+                                <th>Total Amount</th>
+                                <th>Payment Method</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sales-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Modal -->
+    <div id="category-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="category-modal-title">Add Category</h3>
+                <span class="close" onclick="hideModal('category-modal')">&times;</span>
+            </div>
+            <form id="category-form">
+                <input type="hidden" id="category-id">
+                <div class="form-group">
+                    <label for="category-name">Name</label>
+                    <input type="text" id="category-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="category-description">Description</label>
+                    <textarea id="category-description" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="product-modal-title">Add Product</h3>
+                <span class="close" onclick="hideModal('product-modal')">&times;</span>
+            </div>
+            <form id="product-form">
+                <input type="hidden" id="product-id">
+                <div class="form-group">
+                    <label for="product-name">Name</label>
+                    <input type="text" id="product-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-brand">Brand</label>
+                    <input type="text" id="product-brand">
+                </div>
+                <div class="form-group">
+                    <label for="product-category">Category</label>
+                    <select id="product-category" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="product-description">Description</label>
+                    <textarea id="product-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="product-warranty">Warranty (months)</label>
+                    <input type="number" id="product-warranty" min="0">
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Supplier Modal -->
+    <div id="supplier-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="supplier-modal-title">Add Supplier</h3>
+                <span class="close" onclick="hideModal('supplier-modal')">&times;</span>
+            </div>
+            <form id="supplier-form">
+                <input type="hidden" id="supplier-id">
+                <div class="form-group">
+                    <label for="supplier-name">Name</label>
+                    <input type="text" id="supplier-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplier-contact">Contact Person</label>
+                    <input type="text" id="supplier-contact">
+                </div>
+                <div class="form-group">
+                    <label for="supplier-phone">Phone</label>
+                    <input type="text" id="supplier-phone">
+                </div>
+                <div class="form-group">
+                    <label for="supplier-email">Email</label>
+                    <input type="email" id="supplier-email">
+                </div>
+                <div class="form-group">
+                    <label for="supplier-address">Address</label>
+                    <textarea id="supplier-address" rows="2"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Stock Modal -->
+    <div id="stock-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="stock-modal-title">Add Stock</h3>
+                <span class="close" onclick="hideModal('stock-modal')">&times;</span>
+            </div>
+            <form id="stock-form">
+                <input type="hidden" id="stock-id">
+                <div class="form-group">
+                    <label for="stock-product">Product</label>
+                    <select id="stock-product" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="stock-supplier">Supplier</label>
+                    <select id="stock-supplier" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="stock-quantity">Quantity</label>
+                    <input type="number" id="stock-quantity" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="stock-cost">Cost Price</label>
+                    <input type="number" id="stock-cost" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="stock-selling">Selling Price</label>
+                    <input type="number" id="stock-selling" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="stock-location">Location</label>
+                    <input type="text" id="stock-location">
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Client Modal -->
+    <div id="client-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="client-modal-title">Add Client</h3>
+                <span class="close" onclick="hideModal('client-modal')">&times;</span>
+            </div>
+            <form id="client-form">
+                <input type="hidden" id="client-id">
+                <div class="form-group">
+                    <label for="client-name">Name</label>
+                    <input type="text" id="client-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="client-phone">Phone</label>
+                    <input type="text" id="client-phone">
+                </div>
+                <div class="form-group">
+                    <label for="client-email">Email</label>
+                    <input type="email" id="client-email">
+                </div>
+                <div class="form-group">
+                    <label for="client-address">Address</label>
+                    <textarea id="client-address" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="client-credit"> Credit Client
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="client-limit">Credit Limit</label>
+                    <input type="number" id="client-limit" step="0.01" min="0">
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sale Modal -->
+    <div id="sale-modal" class="modal hidden">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>New Sale</h3>
+                <span class="close" onclick="hideModal('sale-modal')">&times;</span>
+            </div>
+            <form id="sale-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sale-client">Client</label>
+                        <select id="sale-client" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sale-payment">Payment Method</label>
+                        <select id="sale-payment" required>
+                            <option value="cash">Cash</option>
+                            <option value="credit">Credit</option>
+                            <option value="debit">Debit Card</option>
+                            <option value="transfer">Bank Transfer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sale-discount">Discount (%)</label>
+                        <input type="number" id="sale-discount" step="0.01" min="0" max="100" value="0">
+                    </div>
+                </div>
+                <div class="sale-items">
+                    <h4>Items</h4>
+                    <div id="sale-items-container"></div>
+                    <button type="button" onclick="addSaleItem()" class="btn btn-secondary">Add Item</button>
+                </div>
+                <div class="sale-total">
+                    <strong>Total: $<span id="sale-total">0.00</span></strong>
+                </div>
+                <button type="submit" class="btn btn-primary">Complete Sale</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

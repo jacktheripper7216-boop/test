@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Login Page -->
+        <div id="login-page" class="page">
+            <div class="auth-container">
+                <h1>Inventory Management</h1>
+                <h2>Login</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-username">Username</label>
+                        <input type="text" id="login-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                <p class="auth-switch">Don't have an account? <a href="#" onclick="showPage('register-page')">Register</a></p>
+                <div id="login-error" class="error-message"></div>
+            </div>
+        </div>
+
+        <!-- Register Page -->
+        <div id="register-page" class="page" style="display: none;">
+            <div class="auth-container">
+                <h1>Inventory Management</h1>
+                <h2>Register</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-username">Username</label>
+                        <input type="text" id="register-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-fullname">Full Name</label>
+                        <input type="text" id="register-fullname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+                <p class="auth-switch">Already have an account? <a href="#" onclick="showPage('login-page')">Login</a></p>
+                <div id="register-error" class="error-message"></div>
+                <div id="register-success" class="success-message"></div>
+            </div>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page" style="display: none;">
+            <nav class="navbar">
+                <h1>Inventory Dashboard</h1>
+                <div class="nav-user">
+                    <span id="user-name">Welcome, User</span>
+                    <button onclick="logout()" class="btn btn-secondary">Logout</button>
+                </div>
+            </nav>
+
+            <main class="dashboard-content">
+                <section class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Products</h3>
+                        <p id="stat-products">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Categories</h3>
+                        <p id="stat-categories">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Suppliers</h3>
+                        <p id="stat-suppliers">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Stock Items</h3>
+                        <p id="stat-stock">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Sales</h3>
+                        <p id="stat-sales">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Clients</h3>
+                        <p id="stat-clients">0</p>
+                    </div>
+                </section>
+
+                <section class="value-stats">
+                    <div class="value-card">
+                        <h3>Total Inventory Value</h3>
+                        <p id="stat-inventory-value">$0.00</p>
+                    </div>
+                    <div class="value-card">
+                        <h3>Potential Sales Value</h3>
+                        <p id="stat-sales-value">$0.00</p>
+                    </div>
+                    <div class="value-card warning">
+                        <h3>Low Stock Items</h3>
+                        <p id="stat-low-stock">0</p>
+                    </div>
+                </section>
+
+                <section class="data-tables">
+                    <div class="table-container">
+                        <h3>Products</h3>
+                        <table id="products-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-container">
+                        <h3>Stock Items</h3>
+                        <table id="stock-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Cost Price</th>
+                                    <th>Selling Price</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-container">
+                        <h3>Suppliers</h3>
+                        <table id="suppliers-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Contact</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

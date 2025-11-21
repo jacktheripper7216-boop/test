@@ -1,6 +1,7 @@
 package com.inventory.controller;
 
 import com.inventory.dto.RegisterRequest;
+import com.inventory.dto.LoginRequest;
 import com.inventory.model.Auth;
 import com.inventory.model.User;
 import com.inventory.repository.AuthRepository;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -61,6 +63,50 @@ public class AuthController {
             response.put("user", userInfo);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+        } catch (Exception e) {
+            response.put("message", "An unexpected error occurred: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> request) {
+        Map<String, Object> response = new HashMap<>();
+
+        String username = request.get("username");
+        String password = request.get("password");
+
+        if (username == null || password == null) {
+            response.put("message", "Username and password are required");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        try {
+            Optional<Auth> authOpt = authRepository.findByUsername(username);
+
+            if (authOpt.isEmpty()) {
+                response.put("message", "Invalid username or password");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            Auth auth = authOpt.get();
+            if (!auth.checkPassword(password)) {
+                response.put("message", "Invalid username or password");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            User user = auth.getUser();
+            Map<String, Object> userInfo = new HashMap<>();
+            userInfo.put("id", user.getId());
+            userInfo.put("username", user.getUsername());
+            userInfo.put("email", user.getEmail());
+            userInfo.put("fullName", user.getFullName());
+
+            response.put("message", "Login successful");
+            response.put("user", userInfo);
+
+            return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             response.put("message", "An unexpected error occurred: " + e.getMessage());

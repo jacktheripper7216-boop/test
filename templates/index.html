@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Inventory - Management System</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">&#9679;</span>
+                <span class="logo-text">SmartInv</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-section="dashboard">
+                <span class="nav-icon">&#9632;</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" data-section="products">
+                <span class="nav-icon">&#9733;</span>
+                <span class="nav-text">Products</span>
+            </a>
+            <a href="#" class="nav-item" data-section="categories">
+                <span class="nav-icon">&#9776;</span>
+                <span class="nav-text">Categories</span>
+            </a>
+            <a href="#" class="nav-item" data-section="suppliers">
+                <span class="nav-icon">&#9992;</span>
+                <span class="nav-text">Suppliers</span>
+            </a>
+            <a href="#" class="nav-item" data-section="stock">
+                <span class="nav-icon">&#9881;</span>
+                <span class="nav-text">Stock</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="#" class="nav-item" id="logout-btn">
+                <span class="nav-icon">&#8634;</span>
+                <span class="nav-text">Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+                <h1 class="page-title" id="page-title">Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <input type="text" placeholder="Search..." id="global-search">
+                    <span class="search-icon">&#128269;</span>
+                </div>
+                <div class="user-profile">
+                    <div class="avatar">U</div>
+                    <span class="username">User</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Section -->
+        <section class="content-section active" id="dashboard-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon products-icon">&#9733;</div>
+                    <div class="stat-info">
+                        <h3 class="stat-value" id="total-products">0</h3>
+                        <p class="stat-label">Total Products</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon categories-icon">&#9776;</div>
+                    <div class="stat-info">
+                        <h3 class="stat-value" id="total-categories">0</h3>
+                        <p class="stat-label">Categories</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon suppliers-icon">&#9992;</div>
+                    <div class="stat-info">
+                        <h3 class="stat-value" id="total-suppliers">0</h3>
+                        <p class="stat-label">Suppliers</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon stock-icon">&#9881;</div>
+                    <div class="stat-info">
+                        <h3 class="stat-value" id="total-stock">0</h3>
+                        <p class="stat-label">Stock Items</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card recent-activity">
+                    <div class="card-header">
+                        <h2>Recent Activity</h2>
+                        <button class="btn btn-text">View All</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-list" id="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon">&#10003;</div>
+                                <div class="activity-details">
+                                    <p class="activity-text">System initialized</p>
+                                    <span class="activity-time">Just now</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card quick-actions">
+                    <div class="card-header">
+                        <h2>Quick Actions</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="showAddModal('product')">
+                                <span class="action-icon">+</span>
+                                <span>Add Product</span>
+                            </button>
+                            <button class="action-btn" onclick="showAddModal('category')">
+                                <span class="action-icon">+</span>
+                                <span>Add Category</span>
+                            </button>
+                            <button class="action-btn" onclick="showAddModal('supplier')">
+                                <span class="action-icon">+</span>
+                                <span>Add Supplier</span>
+                            </button>
+                            <button class="action-btn" onclick="showAddModal('stock')">
+                                <span class="action-icon">+</span>
+                                <span>Add Stock</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="content-section" id="products-section">
+            <div class="section-header">
+                <h2>Products Management</h2>
+                <button class="btn btn-primary" onclick="showAddModal('product')">
+                    <span>+</span> Add Product
+                </button>
+            </div>
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Supplier</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table-body">
+                            <tr>
+                                <td colspan="6" class="empty-state">Loading products...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="content-section" id="categories-section">
+            <div class="section-header">
+                <h2>Categories Management</h2>
+                <button class="btn btn-primary" onclick="showAddModal('category')">
+                    <span>+</span> Add Category
+                </button>
+            </div>
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categories-table-body">
+                            <tr>
+                                <td colspan="4" class="empty-state">Loading categories...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Suppliers Section -->
+        <section class="content-section" id="suppliers-section">
+            <div class="section-header">
+                <h2>Suppliers Management</h2>
+                <button class="btn btn-primary" onclick="showAddModal('supplier')">
+                    <span>+</span> Add Supplier
+                </button>
+            </div>
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="suppliers-table-body">
+                            <tr>
+                                <td colspan="6" class="empty-state">Loading suppliers...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stock Section -->
+        <section class="content-section" id="stock-section">
+            <div class="section-header">
+                <h2>Stock Management</h2>
+                <button class="btn btn-primary" onclick="showAddModal('stock')">
+                    <span>+</span> Add Stock
+                </button>
+            </div>
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Location</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stock-table-body">
+                            <tr>
+                                <td colspan="6" class="empty-state">Loading stock...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Add/Edit -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modal-title">Add Item</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Dynamic form content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,14 +1,20 @@
-from flask import Flask
+from flask import Flask, render_template
 from app.db import db, migrate
 from config import Config
 from flask_login import LoginManager
+import os
 
 # Initialize Flask-Login
 login_manager = LoginManager()
 
 
 def create_app(config_class=Config):
-    app = Flask(__name__)
+    # Get the base directory
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    app = Flask(__name__,
+                template_folder=os.path.join(base_dir, 'templates'),
+                static_folder=os.path.join(base_dir, 'static'))
     app.config.from_object(config_class)
 
     # Initialize extensions
@@ -29,5 +35,10 @@ def create_app(config_class=Config):
     from app.api import bp as api_bp
 
     app.register_blueprint(api_bp)
+
+    # Route for serving the frontend
+    @app.route('/')
+    def index():
+        return render_template('index.html')
 
     return app

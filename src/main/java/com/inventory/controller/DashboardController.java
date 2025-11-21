@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,15 +43,17 @@ public class DashboardController {
         stats.put("clients", clientRepository.findAll());
 
         // Calculate inventory value
-        Double totalInventoryValue = stockRepository.findAll().stream()
-                .mapToDouble(stock -> stock.getQuantity() * stock.getCostPrice())
-                .sum();
+        BigDecimal totalInventoryValue = stockRepository.findAll().stream()
+                .filter(stock -> stock.getCostPrice() != null)
+                .map(stock -> stock.getCostPrice().multiply(BigDecimal.valueOf(stock.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         stats.put("totalInventoryValue", totalInventoryValue);
 
         // Calculate potential sales value
-        Double potentialSalesValue = stockRepository.findAll().stream()
-                .mapToDouble(stock -> stock.getQuantity() * stock.getSellingPrice())
-                .sum();
+        BigDecimal potentialSalesValue = stockRepository.findAll().stream()
+                .filter(stock -> stock.getSellingPrice() != null)
+                .map(stock -> stock.getSellingPrice().multiply(BigDecimal.valueOf(stock.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         stats.put("potentialSalesValue", potentialSalesValue);
 
         // Count low stock items (less than 10 units)

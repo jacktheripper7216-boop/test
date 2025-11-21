@@ -1,9 +1,11 @@
 package com.inventory.controller;
 
 import com.inventory.dto.ProductDTO;
+import com.inventory.dto.StockDTO;
 import com.inventory.model.Product;
 import com.inventory.repository.CategoryRepository;
 import com.inventory.repository.ProductRepository;
+import com.inventory.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ public class ProductController {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final StockRepository stockRepository;
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
@@ -36,6 +39,21 @@ public class ProductController {
         return productRepository.findById(id)
                 .map(product -> ResponseEntity.ok(ProductDTO.fromEntity(product)))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+    }
+
+    @GetMapping("/{id}/stocks")
+    public ResponseEntity<?> getStocksByProductId(@PathVariable Long id) {
+        if (!productRepository.existsById(id)) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Product not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        List<StockDTO> stocks = stockRepository.findByProductId(id)
+                .stream()
+                .map(StockDTO::fromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(stocks);
     }
 
     @PostMapping

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Pro - Modern Inventory Management</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-cubes"></i>
+                <span>Inventory Pro</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="active" data-page="dashboard">
+                    <a href="#dashboard">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li data-page="products">
+                    <a href="#products">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+                <li data-page="categories">
+                    <a href="#categories">
+                        <i class="fas fa-tags"></i>
+                        <span>Categories</span>
+                    </a>
+                </li>
+                <li data-page="stock">
+                    <a href="#stock">
+                        <i class="fas fa-warehouse"></i>
+                        <span>Stock</span>
+                    </a>
+                </li>
+                <li data-page="suppliers">
+                    <a href="#suppliers">
+                        <i class="fas fa-truck"></i>
+                        <span>Suppliers</span>
+                    </a>
+                </li>
+                <li data-page="sales">
+                    <a href="#sales">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Sales</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-role">Administrator</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search products, categories...">
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="header-btn notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <button class="header-btn theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Dashboard Page -->
+        <section id="dashboard" class="page active">
+            <div class="page-header">
+                <h1>Dashboard</h1>
+                <p>Welcome back! Here's what's happening with your inventory.</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon products">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalProducts">0</h3>
+                        <p>Total Products</p>
+                    </div>
+                    <div class="stat-trend up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>12%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon categories">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalCategories">0</h3>
+                        <p>Categories</p>
+                    </div>
+                    <div class="stat-trend up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>8%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon suppliers">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalSuppliers">0</h3>
+                        <p>Suppliers</p>
+                    </div>
+                    <div class="stat-trend down">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>3%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon sales">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalSales">$0</h3>
+                        <p>Total Sales</p>
+                    </div>
+                    <div class="stat-trend up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>24%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h3>Sales Overview</h3>
+                        <select class="period-select">
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                            <option>Last 90 days</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h3>Stock by Category</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Recent Products</h3>
+                        <a href="#products" class="view-all">View All</a>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>SKU</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentProductsTable">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Page -->
+        <section id="products" class="page">
+            <div class="page-header">
+                <h1>Products</h1>
+                <button class="btn btn-primary" onclick="openModal('productModal')">
+                    <i class="fas fa-plus"></i>
+                    Add Product
+                </button>
+            </div>
+
+            <div class="filters-bar">
+                <div class="filter-group">
+                    <input type="text" placeholder="Search products..." class="filter-input" id="productSearch">
+                    <select class="filter-select" id="categoryFilter">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>SKU</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTable">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Page -->
+        <section id="categories" class="page">
+            <div class="page-header">
+                <h1>Categories</h1>
+                <button class="btn btn-primary" onclick="openModal('categoryModal')">
+                    <i class="fas fa-plus"></i>
+                    Add Category
+                </button>
+            </div>
+
+            <div class="categories-grid" id="categoriesGrid">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- Stock Page -->
+        <section id="stock" class="page">
+            <div class="page-header">
+                <h1>Stock Management</h1>
+                <button class="btn btn-primary" onclick="openModal('stockModal')">
+                    <i class="fas fa-plus"></i>
+                    Add Stock
+                </button>
+            </div>
+
+            <div class="stock-alerts">
+                <div class="alert-card warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <h4>Low Stock Alert</h4>
+                        <p><span id="lowStockCount">0</span> products are running low on stock</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Current Stock</th>
+                                <th>Min. Stock</th>
+                                <th>Max. Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stockTable">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Suppliers Page -->
+        <section id="suppliers" class="page">
+            <div class="page-header">
+                <h1>Suppliers</h1>
+                <button class="btn btn-primary" onclick="openModal('supplierModal')">
+                    <i class="fas fa-plus"></i>
+                    Add Supplier
+                </button>
+            </div>
+
+            <div class="suppliers-grid" id="suppliersGrid">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- Sales Page -->
+        <section id="sales" class="page">
+            <div class="page-header">
+                <h1>Sales</h1>
+                <button class="btn btn-primary" onclick="openModal('saleModal')">
+                    <i class="fas fa-plus"></i>
+                    New Sale
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Products</th>
+                                <th>Total</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="salesTable">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Product</h2>
+                <button class="close-btn" onclick="closeModal('productModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="productForm" class="modal-form">
+                <div class="form-group">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productSku">SKU</label>
+                        <input type="text" id="productSku" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Category</label>
+                        <select id="productCategory" required>
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productPrice">Price</label>
+                        <input type="number" id="productPrice" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productStock">Initial Stock</label>
+                        <input type="number" id="productStock" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('productModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Category Modal -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Category</h2>
+                <button class="close-btn" onclick="closeModal('categoryModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="categoryForm" class="modal-form">
+                <div class="form-group">
+                    <label for="categoryName">Category Name</label>
+                    <input type="text" id="categoryName" required>
+                </div>
+                <div class="form-group">
+                    <label for="categoryDescription">Description</label>
+                    <textarea id="categoryDescription" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('categoryModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Supplier Modal -->
+    <div class="modal" id="supplierModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Supplier</h2>
+                <button class="close-btn" onclick="closeModal('supplierModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="supplierForm" class="modal-form">
+                <div class="form-group">
+                    <label for="supplierName">Supplier Name</label>
+                    <input type="text" id="supplierName" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="supplierEmail">Email</label>
+                        <input type="email" id="supplierEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="supplierPhone">Phone</label>
+                        <input type="tel" id="supplierPhone" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="supplierAddress">Address</label>
+                    <textarea id="supplierAddress" rows="2"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('supplierModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Supplier</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Stock Modal -->
+    <div class="modal" id="stockModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Update Stock</h2>
+                <button class="close-btn" onclick="closeModal('stockModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="stockForm" class="modal-form">
+                <div class="form-group">
+                    <label for="stockProduct">Product</label>
+                    <select id="stockProduct" required>
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="stockQuantity">Quantity</label>
+                        <input type="number" id="stockQuantity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="stockType">Type</label>
+                        <select id="stockType" required>
+                            <option value="add">Add Stock</option>
+                            <option value="remove">Remove Stock</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('stockModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Stock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
